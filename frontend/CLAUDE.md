@@ -4,6 +4,7 @@
 
 ## 技術スタック
 
+- Node.js 24 系（`.nvmrc` で指定。`package.json` の `engines` は `^22.18.0 || >=24.12.0`）
 - Vue 3（Composition API、`<script setup>` を使う）
 - TypeScript
 - Vite
