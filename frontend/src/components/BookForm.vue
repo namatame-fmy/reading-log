@@ -20,8 +20,14 @@ function handleSubmit(): void {
   if (!canSubmit.value) return
   // reactive のままだと親で参照を共有してしまうので、コピーして渡す
   emit('submit', { ...form })
+}
+
+/** 入力欄を空に戻す。保存に失敗したとき入力を残せるよう、呼ぶタイミングは親が決める */
+function reset(): void {
   Object.assign(form, createEmptyInput())
 }
+
+defineExpose({ reset })
 </script>
 
 <template>

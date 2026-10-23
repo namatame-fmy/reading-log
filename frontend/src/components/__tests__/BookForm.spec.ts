@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import BookForm from '../BookForm.vue'
 
@@ -17,12 +18,22 @@ describe('BookForm', () => {
     ])
   })
 
-  it('送信後に入力欄を空に戻す', async () => {
+  it('送信しただけでは入力欄を空にしない（保存失敗時に入力を残すため）', async () => {
+    const wrapper = mount(BookForm)
+
+    await wrapper.find('input[name="title"]').setValue('こころ')
+    await wrapper.find('form').trigger('submit')
+
+    expect((wrapper.find('input[name="title"]').element as HTMLInputElement).value).toBe('こころ')
+  })
+
+  it('reset を呼ぶと入力欄を空に戻す', async () => {
     const wrapper = mount(BookForm)
 
     await wrapper.find('input[name="title"]').setValue('こころ')
     await wrapper.find('textarea[name="review"]').setValue('面白かった')
-    await wrapper.find('form').trigger('submit')
+    wrapper.vm.reset()
+    await nextTick()
 
     expect((wrapper.find('input[name="title"]').element as HTMLInputElement).value).toBe('')
     expect((wrapper.find('textarea[name="review"]').element as HTMLTextAreaElement).value).toBe('')
